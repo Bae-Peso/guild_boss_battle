@@ -136,6 +136,9 @@ npm run dev
 その後、管理画面からシーズンとボスのデータを登録すれば利用できます。
 Web Push を使う場合は `supabase functions deploy send-push` でデプロイし、ダッシュボードの Database → Webhooks で `user_notifications` の INSERT を `send-push` に送るよう設定します。
 
+**supabaseの設定で `Authentication` - `Sign in / Provider`の項目のうち、`Confirm email`のところのチェックを解除する必要があります**
+あくまで匿名性を保証するための措置で、ユーザーからE-mailアドレスや個人情報を一切受け取らず、IDとパスワードのみで会員登録ができるようにしています。
+
 ## ディレクトリ構成
 
 ```
