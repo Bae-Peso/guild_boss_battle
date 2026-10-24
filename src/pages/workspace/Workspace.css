@@ -1,0 +1,390 @@
+.workspace-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  background-color: var(--surface-1);
+}
+
+.workspace-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--surface-3); /* Discord dark theme base */
+  color: #dbdee1;
+  font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.workspace-sidebar {
+  width: 280px;
+  background-color: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.workspace-right-sidebar {
+  width: 260px;
+  background-color: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-left: 1px solid var(--surface-1);
+}
+
+.workspace-header {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid var(--surface-1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workspace-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #f2f3f5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guild-code {
+  font-size: 0.8rem;
+  color: #949ba4;
+  background-color: var(--surface-1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.workspace-nav {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* 통합 네비(지휘 툴 → 텍스트 채널 → 결산)는 nav-section을 세로로 쌓는다. 블록 사이 숨통. */
+.nav-section + .nav-section {
+  margin-top: 1.25rem;
+}
+
+.nav-section h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #949ba4;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.nav-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-section li a {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  color: #949ba4;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.nav-section li a:hover {
+  background-color: #35373c;
+  color: #dbdee1;
+}
+
+.workspace-footer {
+  background-color: #232428;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-btn {
+  display: block;
+  text-align: center;
+  background-color: var(--accent-blurple);
+  color: var(--text-strong);
+  text-decoration: none;
+  padding: 0.6rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.settings-btn:hover {
+  background-color: #4752c4;
+}
+
+.workspace-content {
+  flex: 1;
+  background-color: var(--surface-3);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* 패널 접기/펼치기 버튼 (좌·우 동일 크기, 1:1 비율) */
+.panel-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: var(--surface-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border-2);
+  cursor: pointer;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.panel-toggle-btn:hover {
+  background-color: var(--surface-4);
+  color: var(--text-strong);
+}
+
+/* 패널이 접혀 있을 때 다시 펼치는 버튼.
+   본문 폭을 줄이지 않도록 떠 있게(absolute) 두고 배경은 투명으로 한다.
+   각 페이지는 상단 헤더에만 여백(--panel-collapse-inset)을 줘서 이 버튼과 겹치지 않게 한다. */
+.panel-expand-btn {
+  position: absolute;
+  top: 12px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border-2);
+  cursor: pointer;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.panel-expand-btn:hover {
+  background-color: var(--surface-4);
+  color: var(--text-strong);
+}
+
+.panel-expand-btn.left {
+  left: 12px;
+}
+
+.panel-expand-btn.right {
+  right: 12px;
+}
+
+/* 접힌 패널 쪽 상단 헤더가 펼치기 버튼과 겹치지 않도록 확보할 여백 폭 */
+:root {
+  --panel-collapse-inset: 52px;
+}
+
+/* 길드 설정 상단 탭 버튼(.settings-tab-bar)은 settings/settings.css 로 옮겼다. */
+
+/* ==========================================================================
+   모바일 셸 (≤820px) — 단일 화면 + 하단 탭 바 + 인원 드로어
+   데스크톱 3분할 규칙은 위에 그대로 두고, 아래는 WorkspaceMobileShell 전용.
+   ========================================================================== */
+.mobile-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background-color: var(--surface-3);
+  color: #dbdee1;
+  font-family: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.mobile-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  background-color: var(--surface-2);
+  border-bottom: 1px solid var(--surface-1);
+  flex-shrink: 0;
+}
+
+.mobile-topbar-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #f2f3f5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: var(--surface-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border-2);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.mobile-back-btn:active {
+  background-color: var(--surface-4);
+  color: var(--text-strong);
+}
+
+.mobile-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--surface-3);
+}
+
+/* 상세 화면 전용 떠 있는 뒤로가기 버튼 (셸 상단바 제거분을 대체).
+   페이지 자체 헤더의 --panel-collapse-inset 여백 안에 얹혀 텍스트와 겹치지 않는다. */
+.mobile-back-fab {
+  position: absolute;
+  top: calc(7px + env(safe-area-inset-top));
+  left: 8px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: var(--surface-2);
+  color: var(--text-strong);
+  border: 1px solid var(--border-2);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.mobile-back-fab:active {
+  background-color: var(--surface-4);
+}
+
+.mobile-tabbar {
+  display: flex;
+  flex-shrink: 0;
+  background-color: var(--surface-2);
+  border-top: 1px solid var(--surface-1);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 0 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.mobile-tab.active {
+  color: var(--text-strong);
+}
+
+.mobile-tab-icon {
+  position: relative;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.mobile-tab-badge {
+  position: absolute;
+  top: -3px;
+  right: -6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.mobile-tab-label {
+  font-size: 0.72rem;
+}
+
+/* 인원 드로어 */
+.mobile-drawer-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 900;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(85vw, 320px);
+  z-index: 901;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface-2);
+  border-right: 1px solid var(--surface-1);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.4);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  animation: mobile-drawer-in 0.2s ease-out;
+}
+
+@keyframes mobile-drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--surface-1);
+  flex-shrink: 0;
+}

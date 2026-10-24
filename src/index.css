@@ -1,0 +1,403 @@
+@import url('pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --primary-color: #f15a24;
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --border-color: #333333;
+
+  /* ===== 워크스페이스(디스코드형) 팔레트 =====
+     각 토큰은 기존에 흩어져 있던 hex와 100% 동일한 값. 시각 변화 없이 중앙화만 한다. */
+  /* 배경 단계 (어두움 → 밝음) */
+  --surface-0: #121212;
+  --surface-1: #1e1f22;
+  --surface-2: #2b2d31;
+  --surface-3: #313338;
+  --surface-4: #383a40;
+  /* 경계선 */
+  --border-1: #3f3f46;
+  --border-2: #444444;
+  --border-3: #555555;
+  /* 텍스트 */
+  --text-strong: #ffffff;
+  --text-muted: #aaaaaa;
+  --text-dim: #888888;
+  --text-soft: #cccccc;
+  --text-inverse: #000000;
+  /* 강조 / 시맨틱 */
+  --accent-green: #4ade80;
+  --accent-amber: #ffc107;
+  --accent-blue: #4dabf7;
+  --accent-blurple: #5865f2;
+  /* surface-4에 accent-blue를 12% 섞은 톤. 어두운 항목을 원색으로 칠하지 않고
+     '파란 기운만' 얹어 은은하게 띄울 때 쓴다(네비의 지휘 채팅방). */
+  --accent-blue-soft: #3a4856;
+  --accent-blue-dim: #6ea8d8;
+  --danger: #f87171;
+  --danger-strong: #f04747;
+  --danger-bright: #f03e3e;
+  --error: #ff6b6b;
+  /* 관리자/보조 시맨틱 */
+  --success: #28a745;
+  --danger-solid: #dc3545;
+  --info: #17a2b8;
+  --text-faint: #a0a0a5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Pretendard', 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* 스크롤바 다크 테마 통일 (Firefox: thin + 색상, Chrome/Edge: 얇고 둥근 썸) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-2);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--border-3);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.primary-btn:hover {
+  opacity: 0.8;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.lang-switcher button {
+  color: var(--text-color);
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.lang-switcher button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Auth Styles */
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+.auth-container {
+  background-color: #222222;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #cccccc;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: #1a1a1a;
+  color: white;
+  font-size: 1rem;
+}
+
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.error-alert {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #ff6b6b;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Lobby Styles */
+.lobby-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.lobby-card {
+  background-color: #222222;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.lobby-card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.lobby-card p {
+  color: #aaaaaa;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: #aaaaaa;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #555;
+}
+
+.secondary-btn:hover {
+  background-color: #333;
+  color: white;
+}
+
+/* Nikke Name Marquee */
+.nikke-name-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}
+.nikke-name-static {
+  display: inline-block;
+}
+.nikke-name-marquee {
+  display: inline-block;
+  animation: marquee-pingpong 8s linear infinite alternate;
+}
+@keyframes marquee-pingpong {
+  0% { transform: translateX(0); }
+  10% { transform: translateX(0); } /* pause at start */
+  90% { transform: translateX(calc(90px - 100%)); } /* assuming modal box is 90px max */
+  100% { transform: translateX(calc(90px - 100%)); } /* pause at end */
+}
+
+
+/* 부팅 화면 — 세션 확인 중/실패.
+   예전에는 세션이 확정될 때까지 아무것도 렌더하지 않아 흰 화면이었다. */
+.app-boot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--surface-1);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+.app-boot-title {
+  color: var(--error);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.app-boot-detail {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  max-width: 32rem;
+}
+.app-boot-retry {
+  margin-top: 0.5rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--accent-blurple);
+  color: var(--text-strong);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 라우트 청크 로딩 중 자리 표시 (레이아웃 안쪽 Suspense 경계용) */
+.route-fallback {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 12rem;
+  padding: 2rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   공용 데이터 표 / 뱃지 / 유틸
+   원래 Admin.css 에만 있어서 관리자 라우트에서만 로드됐다. 길드 설정 모달·결산 모달
+   등 워크스페이스 쪽에서도 같은 클래스를 쓰는데 스타일이 빠져 표가 폭 없이 찌그러졌다.
+   ========================================================================== */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #222222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-table th, .admin-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table th {
+  background-color: #111111;
+  color: var(--text-muted);
+  font-weight: normal;
+}
+
+/* 표를 감싸 가로 스크롤을 제공하는 래퍼 */
+.admin-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 래퍼 안에서는 컬럼이 좁게 눌리는 대신, 표가 넓어지면 가로로 스크롤되도록 처리.
+   개별 셀에서 인라인 whiteSpace(pre-wrap/nowrap+ellipsis 등)를 지정하면 그 값이 우선한다. */
+.admin-table-wrap .admin-table th,
+.admin-table-wrap .admin-table td {
+  white-space: nowrap;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.status-pending {
+  background-color: var(--accent-amber);
+  color: var(--text-inverse);
+}
+
+.status-approved {
+  background-color: var(--success);
+  color: var(--text-strong);
+}
+
+.status-banned {
+  background-color: var(--danger-solid);
+  color: var(--text-strong);
+}
+
+.btn-success {
+  background-color: var(--success);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.btn-danger {
+  background-color: var(--danger-solid);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+/* 어디에서도 정의된 적이 없어 colSpan 빈 상태 행이 왼쪽 정렬로 찍히던 유틸 */
+.text-center {
+  text-align: center;
+}
+
+.mx-1 {
+  margin: 0 4px;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}

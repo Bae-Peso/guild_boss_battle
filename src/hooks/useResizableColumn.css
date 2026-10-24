@@ -1,0 +1,25 @@
+/* 엑셀식 열 너비 조절 핸들: 헤더 오른쪽 경계에 겹쳐 놓는다.
+   useResizableColumn 훅과 함께 사용한다(핸들 요소에 resizerProps 스프레드). */
+.col-resizer {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  z-index: 3;
+}
+.col-resizer::after {
+  content: '';
+  position: absolute;
+  top: 18%;
+  right: 4px;
+  width: 2px;
+  height: 64%;
+  background: var(--border-3);
+  border-radius: 1px;
+  transition: background 0.12s;
+}
+.col-resizer:hover::after { background: var(--accent-green); }

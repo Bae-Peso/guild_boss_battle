@@ -1,0 +1,199 @@
+/* 지휘 채팅방 (/workspace/boss-battle-chat)
+ * 상단 = 보스 현황(보스 5마리 = 카드 5장, 카드 하나가 통째로 버튼), 아래 = 지휘 채팅.
+ * 데스크톱 기준으로 설계했고, 좁은 화면은 '깨지지 않는' 수준까지만 대응한다(.narrow). */
+
+/* 여백 없이 화면을 꽉 채운다. 구획은 카드(테두리·라운드) 대신 실선 한 줄로 나눈다 —
+   지휘 현황판(BossBattleDashboard)과 같은 방식: surface-0 바탕 + border-1 구분선. */
+.boss-battle-chat-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background-color: var(--surface-0);
+}
+
+.boss-battle-chat-page__inner {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* ── 보스 현황 ─────────────────────────────────────────────── */
+.boss-battle-boss-panel {
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border-1);
+    padding: 8px 12px 10px;
+}
+
+.boss-battle-boss-panel__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.boss-battle-boss-panel__title {
+    color: var(--accent-amber);
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.boss-battle-boss-panel__season {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.boss-battle-boss-panel__season-select {
+    flex-shrink: 0;
+    max-width: 60%;
+    padding: 3px 6px;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    background-color: var(--surface-0);
+    border: 1px solid var(--border-1);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 보스 5마리를 같은 폭으로 나란히. 예전엔 3행 테이블이었는데, 칸 전체를 하나의 버튼으로
+   만들려면 열 하나가 한 요소여야 해서 카드(버튼) 그리드로 바꿨다. */
+.boss-battle-boss-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* 보스 한 마리 = 카드 하나 = 버튼 하나. 이름부터 체력 바까지 어디를 눌러도 보스 정보 모달이 열린다. */
+.rbt-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 4px 8px 6px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-soft);
+    font-family: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.rbt-card + .rbt-card {
+    border-left: 1px solid var(--surface-2);
+}
+
+.rbt-card:hover {
+    background-color: var(--surface-2);
+}
+
+.rbt-card:hover .rbt-name {
+    color: var(--accent-blue);
+    text-decoration-color: var(--accent-blue);
+}
+
+/* 보스 데이터가 없는 자리는 누를 것이 없다 */
+.rbt-card--empty { cursor: default; }
+.rbt-card--empty:hover { background-color: transparent; }
+.rbt-card--empty .rbt-name { text-decoration: none; }
+
+/* 체력 영역만 카드 폭을 꽉 채운다 — 체력 바가 글자 폭에 맞춰 줄어들지 않도록 */
+.rbt-hp {
+    width: 100%;
+    min-width: 0;
+}
+
+/* 점선 밑줄 = 눌러서 보스 메모/추천 덱 보기. 지휘 현황판의 보스 이름과 같은 약속이라,
+   카드 전체가 눌리게 된 뒤에도 "여기가 입구"라는 표시로 남겨 둔다. */
+.rbt-name {
+    max-width: 100%;
+    color: var(--text-strong);
+    font-weight: bold;
+    font-size: 0.9rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: var(--text-faint);
+    text-underline-offset: 2px;
+}
+
+.rbt-stage {
+    margin-left: 5px;
+    padding: 0 6px;
+    font-size: 0.7rem;
+    font-weight: lighter;
+    color: var(--accent-amber);
+    border: 1px solid var(--accent-amber);
+    border-radius: 7px;
+}
+
+.rbt-element {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    white-space: nowrap;
+}
+
+.rbt-element img {
+    width: 1.05em;
+    height: 1.05em;
+    object-fit: contain;
+}
+
+/* 체력 바: 좌 → 우 = 남은 체력(노랑) / 계산기로 없어질 체력(주황) / 이미 감소한 체력(회색) */
+.rbt-hpbar {
+    display: flex;
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: var(--surface-3);
+    border: 1px solid var(--border-1);
+}
+
+.rbt-hpbar__seg--remain { background-color: var(--accent-amber); }
+.rbt-hpbar__seg--calc   { background-color: #f97316; }
+.rbt-hpbar__seg--lost   { background-color: var(--border-3); }
+
+/* 상세 모드의 체력 값은 "1,650,000,000,000"처럼 길어서, 폭이 좁아지면 잘라내기보다 줄바꿈시킨다.
+   (잘라내면 하필 뒤쪽의 '%'나 '(오버킬)' 같은 판단 정보가 먼저 사라진다) */
+.rbt-hplabel {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    line-height: 1.35;
+}
+
+.rbt-hplabel__pct { color: var(--text-dim); margin-left: 5px; }
+.rbt-hpcalc { font-size: 0.7rem; color: #f97316; line-height: 1.35; }
+.rbt-cleared { font-size: 0.82rem; font-weight: bold; color: var(--accent-green); }
+.rbt-infinite { font-size: 0.82rem; font-weight: bold; color: var(--accent-blue); line-height: 1.35; }
+.rbt-empty { font-size: 0.78rem; color: var(--text-dim); }
+
+/* ── 채팅 ──────────────────────────────────────────────────── */
+.boss-battle-chat-page__chat {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface-1);
+    overflow: hidden;
+}
+
+/* 좁은 화면 최소 대응: 보스 현황은 가로 스크롤, 채팅은 접히지 않게 최소 높이 확보.
+   (모바일 셸은 Outlet을 세로 스크롤 컨테이너로 감싸서 flex:1 만으로는 높이가 0이 된다) */
+.boss-battle-chat-page.narrow .boss-battle-boss-panel { overflow-x: auto; }
+.boss-battle-chat-page.narrow .boss-battle-boss-grid { min-width: 560px; }
+.boss-battle-chat-page.narrow .boss-battle-chat-page__chat { min-height: 65vh; }

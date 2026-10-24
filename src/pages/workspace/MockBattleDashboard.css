@@ -1,0 +1,33 @@
+.memo-tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.memo-tooltip-content {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  max-width: 300px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: var(--text-strong);
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.2s, visibility 0.2s;
+  font-size: 0.8rem;
+  font-weight: normal;
+  white-space: pre-wrap;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-2);
+  pointer-events: none;
+}
+
+.memo-tooltip-container:hover .memo-tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}

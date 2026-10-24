@@ -1,0 +1,349 @@
+/* 길드 보스전 결산 페이지 */
+.settlement-page {
+  padding: 20px;
+  color: var(--text-strong);
+  background-color: var(--surface-3);
+  min-height: 100%;
+}
+
+.settlement-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.settlement-table-wrap {
+  background-color: var(--surface-2);
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.settlement-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.settlement-table thead th {
+  background-color: var(--surface-1);
+  border-bottom: 1px solid var(--border-1);
+  padding: 10px 8px;
+  white-space: nowrap;
+  position: relative; /* 열 너비 조절 핸들(.col-resizer) 기준 */
+}
+
+.settlement-table tbody td {
+  border-bottom: 1px solid var(--border-1);
+  padding: 8px;
+  vertical-align: middle;
+  /* 보스명·대미지 길이로 두 줄이 되지 않도록: 열 폭을 내용에 맞춘다(넘치면 가로 스크롤). */
+  white-space: nowrap;
+}
+
+/* 상단 그룹 헤더(일자 / 대미지 / 결과 / 성장) */
+.settlement-group-th {
+  background-color: var(--surface-0);
+  border-bottom: 1px solid var(--border-2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.settlement-badge-last {
+  display: inline-block;
+  background: var(--danger-solid);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+/* 비고: 저장된 값만 표시. 폭에 맞춰 접지 않고, 입력된 줄바꿈만 유지한다. */
+.settlement-note-text {
+  font-size: 0.85rem;
+  white-space: pre;
+  text-align: left;
+}
+
+/* 타수 셀: 보스명 줄 + 스쿼드 + 대미지. 모두 한 줄로, 열 폭이 내용에 맞춰 늘어난다. */
+.settlement-hit-title {
+  font-size: 0.82rem;
+  color: #93c5fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+.settlement-hit-squad {
+  display: flex;
+  gap: 3px;
+  margin: 6px 0;
+  justify-content: center;
+}
+
+/* 스쿼드 니케 아이콘 크기 슬라이더 */
+.settlement-avatar-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+.settlement-avatar-size input { width: 110px; }
+.settlement-avatar-size span { min-width: 3.2em; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+/* 상단 보스 개요 5칸 표 */
+.settlement-boss-overview {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  margin-bottom: 16px;
+  /* 칸 폭을 내용(보스명·대미지)에 맞춘다 — fixed 로 두면 5등분 폭에 맞춰 글자가 두 줄로 접힌다. */
+  table-layout: auto;
+}
+.sbo-total {
+  text-align: center;
+  background: var(--surface-1);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+}
+.sbo-total strong { color: var(--accent-green); margin-left: 6px; font-size: 1.15rem; }
+.sbo-total-sub {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.sbo-total-sub strong { color: var(--accent-blue); margin-left: 6px; font-size: 1rem; }
+.sbo-cell {
+  background: var(--surface-2);
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  vertical-align: top;
+  overflow: hidden;       /* 셀 밖으로 나간 배너가 둥근 모서리를 넘지 않도록 */
+}
+.sbo-cell:hover { background: var(--surface-3); border-color: var(--accent-amber); }
+/* 보스 이미지는 배너처럼 — 셀 좌우·상단 패딩까지 넘겨 폭을 꽉 채우고 상하를 잘라 크게 보여준다.
+   잘린 위/아래 경계는 BossImage의 fade 마스크가 카드 배경으로 흐려준다. */
+.sbo-icon {
+  height: 96px;
+  margin: -10px -6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.sbo-icon img { width: 100%; height: 100%; object-fit: cover; }
+.sbo-icon span { font-size: 30px; }
+.sbo-name, .sbo-meta, .sbo-dmg { white-space: nowrap; }
+.sbo-name { font-weight: bold; color: var(--text-strong); margin-top: 2px; font-size: 0.9rem; }
+.sbo-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.sbo-dmg { font-weight: bold; color: var(--accent-green); margin-top: 6px; font-size: 0.9rem; }
+
+/* 단계별 클리어 타임 (전체 결산 상단) */
+.settlement-stage-times {
+  background: var(--surface-2);
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+.sst-title { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; }
+.sst-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.sst-item {
+  flex: 1 1 130px;
+  min-width: 120px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-1);
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.sst-level { font-size: 0.85rem; font-weight: bold; color: var(--text-strong); }
+.sst-tag {
+  margin-left: 4px;
+  font-size: 0.65rem;
+  font-weight: normal;
+  color: var(--accent-amber);
+  border: 1px solid var(--accent-amber);
+  border-radius: 3px;
+  padding: 0 3px;
+  vertical-align: middle;
+}
+.sst-time { font-size: 0.95rem; font-weight: bold; color: var(--accent-green); margin-top: 2px; }
+.sst-time-pending { color: var(--text-dim); font-size: 0.85rem; font-weight: normal; }
+.sst-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; min-height: 1em; }
+
+/* 보스별 상세 페이지 레이아웃 (aaa / bdd / cdd) */
+.boss-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  grid-template-areas:
+    "info info"
+    "stages hits"
+    "nikkes hits";
+  /* 왼쪽 두 카드(단계 요약 · 니케)는 내용 높이만 차지하고 서로 붙어야 한다.
+     마지막 행을 1fr 로 두지 않으면 오른쪽 타수 카드 높이만큼 두 행이 균등 분배되어
+     니케 카드가 화면 중간(50%)까지 밀려 내려간다. */
+  grid-template-rows: auto auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.bd-info { grid-area: info; }
+.bd-stages { grid-area: stages; }
+.bd-nikkes { grid-area: nikkes; }
+.bd-hits { grid-area: hits; }
+.bd-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border-1);
+  border-radius: 8px;
+  padding: 14px;
+}
+.bd-card h3 { margin: 0 0 10px; color: var(--text-strong); font-size: 1rem; }
+/* a) 보스 정보 카드: 상단 60% 높이 · 90% 폭 이미지(상하 크롭) + 아래 2줄 중앙정렬 */
+.bd-info {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+}
+.bd-info-img-wrap {
+  width: 90%;
+  height: 60%;
+  border-radius: 8px;
+  overflow: hidden;       /* 크기에 맞춰 상하를 잘라냄(cover) */
+  flex-shrink: 0;
+  background: var(--surface-1);
+}
+.bd-info-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+}
+.bd-info-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--text-strong);
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+/* 보스 이름 왼쪽 약점 속성 아이콘 */
+.bd-info-element { width: 1.1em; height: 1.1em; object-fit: contain; flex-shrink: 0; }
+.bd-info-sub { color: var(--text-muted); font-size: 0.95rem; }
+.bd-info-total { color: var(--text-muted); font-size: 0.9rem; }
+.bd-info-total strong { color: var(--accent-green); margin-left: 2px; font-size: 1rem; }
+.bd-mini-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+/* 좁은 카드 안에서 표 머리글이 글자 단위로 접히지 않게: 한 줄 고정 + 넘치면 가로 스크롤 */
+.bd-table-scroll { overflow-x: auto; }
+.bd-stages .bd-mini-table { white-space: nowrap; }
+.bd-stages .bd-mini-table th, .bd-stages .bd-mini-table td { padding: 6px 5px; }
+.bd-mini-table th, .bd-mini-table td { border-bottom: 1px solid var(--border-1); padding: 6px 8px; text-align: center; }
+.bd-mini-table th { color: var(--text-muted); }
+.bd-nikke-list { display: flex; flex-wrap: wrap; gap: 10px; }
+.bd-nikke-item { width: 68px; text-align: center; }
+.bd-nikke-item > div:first-child { margin: 0 auto; }
+.bd-nikke-count { font-size: 0.74rem; color: var(--text-soft); margin-top: 3px; white-space: nowrap; }
+.bd-nikke-rate { color: var(--text-muted); }
+
+/* 타수 표 보기 모드 전환(단계별 / 전체) */
+.bd-hits-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bd-hits-head h3 { margin: 0 0 10px; }
+.bd-view-toggle { display: inline-flex; border: 1px solid var(--border-3); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+.bd-view-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--text-soft);
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.bd-view-toggle button + button { border-left: 1px solid var(--border-3); }
+.bd-view-toggle button.active { background: var(--accent-green); color: #000; font-weight: bold; }
+
+/* 단계 구분선 겸 단계 요약 행 */
+.bd-stage-sep td {
+  background: var(--surface-1);
+  border-top: 2px solid var(--border-3);
+  text-align: left;
+  padding: 6px 8px;
+}
+.bd-hits-table tbody tr.bd-stage-sep:first-child td { border-top: none; }
+.bd-stage-sep-title { font-weight: bold; color: var(--accent-green); font-size: 0.88rem; margin-right: 8px; }
+.bd-stage-sep-meta { font-size: 0.78rem; color: var(--text-muted); }
+.bd-stage-sep-meta strong { color: var(--text-soft); }
+
+/* 대미지 셀: 좁아지면 '대미지' 다음 줄에 '막타 · 단계'가 함께 접힌다. */
+.bd-hit-dmg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.bd-hit-dmg-val { font-weight: bold; }
+.bd-hit-dmg-tags { display: inline-flex; align-items: center; white-space: nowrap; }
+.bd-hit-dmg-tags .settlement-badge-last:last-child { margin-right: 0; }
+.bd-hit-stage { font-size: 0.72rem; color: var(--text-dim); }
+/* 대미지 비율 열(분모는 보기 모드에 따라 단계 체력 / 보스 총합) */
+.bd-hit-ratio { color: var(--accent-blue); font-weight: bold; white-space: nowrap; }
+.bd-th-sub { font-size: 0.66rem; font-weight: normal; color: var(--text-dim); margin-left: 3px; }
+
+/* d) 타수별 대미지 표: 순번 / 닉네임 / 싱크로 / 스쿼드 / 대미지 */
+/* 스쿼드 열은 내용(니케 5기)에 맞춰 최소폭으로, 나머지 열이 가로 여백을 나눠 갖는다. */
+.bd-hit-squad-col { width: 1%; white-space: nowrap; }
+/* 스쿼드 열에 폭을 뺏겨 머리글/닉네임이 글자 단위로 접히는 것을 막는다. */
+.bd-hits-table thead th { white-space: nowrap; }
+.bd-hit-name { min-width: 6em; }
+.bd-hit-squad {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+.bd-hit-squad > div { flex-shrink: 0; }
+
+/* 좁은 화면: 세로 스택 */
+@media (max-width: 820px) {
+  .boss-detail-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-template-areas: "info" "stages" "nikkes" "hits";
+  }
+}
+
+/* 출력(인쇄): 컨트롤/관리자 전용 열 숨기고 표만 흑백 친화적으로 */
+@media print {
+  body * { visibility: hidden; }
+  .settlement-print-area, .settlement-print-area * { visibility: visible; }
+  .settlement-print-area { position: absolute; left: 0; top: 0; width: 100%; }
+  .settlement-no-print { display: none !important; }
+  .settlement-admin-col { display: none !important; }
+  .settlement-page { background: #fff; color: #000; padding: 0; }
+  .settlement-table thead th { background: #eee; color: #000; }
+  .settlement-table, .settlement-table th, .settlement-table td { border-color: #999; }
+}

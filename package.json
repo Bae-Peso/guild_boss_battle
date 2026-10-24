@@ -1,0 +1,38 @@
+{
+  "name": "guild-boss-battle-control",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/ensure-deps.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/ensure-deps.mjs",
+    "build": "vite build",
+    "prelint": "node scripts/ensure-deps.mjs",
+    "lint": "oxlint",
+    "prepreview": "node scripts/ensure-deps.mjs",
+    "preview": "vite preview",
+    "postinstall": "node scripts/ensure-deps.mjs --mark",
+    "deploy": "npm run build && npx wrangler pages deploy dist && npm run verify:deploy",
+    "verify:deploy": "node scripts/verify-deploy.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
+    "dotenv": "^17.4.2",
+    "html-to-image": "^1.11.13",
+    "i18next": "^26.3.2",
+    "pretendard": "^1.3.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.8",
+    "react-router-dom": "^7.18.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "oxlint": "^1.69.0",
+    "supabase": "^2.121.0",
+    "vite": "^8.1.0"
+  }
+}

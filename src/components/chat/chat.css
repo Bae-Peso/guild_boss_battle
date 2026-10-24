@@ -1,0 +1,133 @@
+/* 채팅 메시지 목록 공용 스타일 (일반 채팅 / 지휘 채팅).
+   연속 메시지는 프로필·닉네임·시간을 생략하므로, 그 자리(여백)에 hover 시에만 시간을 띄운다.
+   메시지 수가 많아도 리렌더가 없도록 React state 대신 CSS :hover 로 처리한다. */
+.chat-msg-row .chat-hover-time {
+  visibility: hidden;
+}
+
+.chat-msg-row:hover .chat-hover-time {
+  visibility: visible;
+}
+
+/* 지휘 채팅방의 방 전환(일반/관리자) pill.
+   탭 한 줄을 쓰지 않으려고 채팅 우측 상단에 띄우고, 평소엔 반투명으로 물러나 있다가
+   hover 하면 또렷해진다(지휘 현황판의 폭 조절 슬라이더와 같은 성격). */
+.boss-battle-room-switch {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 6;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 14px;
+  background: rgba(20, 20, 26, 0.72);
+  border: 1px solid var(--border-1);
+  opacity: 0.45;
+  transition: opacity 0.15s;
+  user-select: none;
+}
+
+.boss-battle-room-switch:hover,
+.boss-battle-room-switch.has-unread {
+  opacity: 1;
+}
+
+.boss-battle-room-switch button {
+  position: relative;
+  padding: 3px 11px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.boss-battle-room-switch button.active {
+  background: var(--surface-4);
+  color: var(--text-strong);
+  font-weight: bold;
+}
+
+.boss-battle-room-switch .dot {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* 지휘 채팅 머리말의 "이번 시즌 소모 타수" 칩 — 닉네임과 시각 사이.
+   예: 2 / 3 [작열] [전격] (때린 순서대로 보스 약점 속성 아이콘) */
+.boss-battle-hit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 5px;
+  border: 1px solid var(--border-1);
+  border-radius: 9px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.boss-battle-hit-chip__count { font-variant-numeric: tabular-nums; }
+.boss-battle-hit-chip__count.is-spent { color: var(--danger); }
+.boss-battle-hit-chip img { width: 12px; height: 12px; object-fit: contain; }
+
+/* ── 메시지 반응(이모지) ─────────────────────────────────────────────────────
+   반응을 다는 입구는 우클릭 메뉴 하나뿐이다. 커서만 올려도 버튼이 뜨게 했더니
+   목록을 훑는 내내 뭔가 나타났다 사라져서 읽기가 어려웠다. */
+.chat-react-btn {
+  padding: 2px 7px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.chat-react-btn:hover { background: var(--surface-4); }
+.chat-react-btn.is-mine { background: var(--accent-blue-soft); }
+
+/* 메시지 아래에 남는 반응 칩. 내가 누른 칩은 테두리로 구분한다
+   (누가 눌렀는지는 칩 툴팁에 이름으로 적힌다). */
+.chat-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.chat-reactions.is-right { justify-content: flex-end; }
+
+.chat-reaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border: 1px solid var(--border-1);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.chat-reaction:hover:not(:disabled) { border-color: var(--border-3); }
+.chat-reaction:disabled { cursor: default; }
+
+.chat-reaction.is-mine {
+  border-color: var(--accent-blue);
+  background: var(--accent-blue-soft);
+  color: var(--text-strong);
+}
+
+.chat-reaction__emoji { font-size: 0.85rem; }
+.chat-reaction__count { font-variant-numeric: tabular-nums; }

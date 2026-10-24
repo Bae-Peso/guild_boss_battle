@@ -1,0 +1,320 @@
+
+.boss-battle-board-container {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--surface-0);
+    color: var(--text-strong);
+}
+
+.boss-battle-board {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-1);
+    padding: 10px;
+    background-color: var(--surface-0);
+    overflow: hidden;
+    position: relative;
+}
+
+/* 보스 항목 폭 배율 슬라이더 (우측 하단, 평소엔 흐리게) */
+.board-scale-slider {
+    position: absolute;
+    right: 14px;
+    bottom: 8px;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 14px;
+    background: rgba(20, 20, 26, 0.72);
+    border: 1px solid var(--border-1);
+    opacity: 0.5;
+    transition: opacity 0.15s;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    user-select: none;
+}
+.board-scale-slider:hover { opacity: 1; }
+.board-scale-slider input[type="range"] {
+    width: 80px;
+    accent-color: var(--accent-amber);
+    cursor: pointer;
+}
+.board-scale-slider__val { min-width: 34px; text-align: right; }
+
+.board-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #1e1e24;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+/* 모바일: 상단 설정 바를 세로 2줄 + 접기 토글로 (제목 세로 짓눌림/공간 낭비 방지) */
+.board-controls--mobile {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.board-controls-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.board-title-text {
+    font-weight: bold;
+    color: var(--accent-amber);
+    font-size: 1.05rem;
+    white-space: nowrap;
+}
+
+.board-controls-toggle {
+    flex-shrink: 0;
+    background: var(--surface-1);
+    color: var(--text-soft);
+    border: 1px solid var(--border-1);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.board-controls--mobile .board-controls-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 긴 체크박스 라벨은 한 줄 통째로 차지 */
+.board-controls--mobile .board-controls-actions > label {
+    flex: 1 1 100%;
+    white-space: normal;
+}
+
+.stage-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+    background-color: var(--surface-0);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border-1);
+}
+
+.stage-selector button {
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    font-weight: bold;
+}
+.stage-selector button:hover { color: var(--text-strong); }
+
+.boss-columns {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.boss-col {
+    flex: 1 0 250px;
+    min-width: 250px;
+    background-color: #1e1e24;
+    border: 1px solid var(--border-1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.boss-header {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-1);
+    background-color: #26262c;
+    flex-shrink: 0;
+}
+
+.boss-hp {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--danger);
+    margin-top: 5px;
+}
+
+.pool-area, .calc-area {
+    height: 50%;
+    padding: 10px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.pool-area {
+    border-bottom: 2px dashed var(--border-1);
+    background-color: rgba(0,0,0,0.2);
+}
+
+.calc-area {
+    background-color: rgba(74, 222, 128, 0.05);
+}
+
+.section-title {
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.mock-card {
+    background-color: #2d2d34;
+    border: 1px solid var(--border-1);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    cursor: grab;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mock-card:hover {
+    border-color: var(--accent-green);
+}
+
+.mock-card .dmg {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--accent-green);
+}
+
+.chat-section {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e24;
+    min-width: 300px;
+}
+
+.chat-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-1);
+    flex-shrink: 0;
+}
+
+.chat-tab {
+    flex: 1;
+    padding: 15px 0;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-faint);
+    font-size: 0.9rem;
+}
+
+.chat-tab.active {
+    color: var(--text-strong);
+    border-bottom: 2px solid var(--accent-green);
+    background-color: rgba(255,255,255,0.05);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.chat-input {
+    padding: 15px;
+    border-top: 1px solid var(--border-1);
+    flex-shrink: 0;
+}
+
+.chat-input input {
+    width: 100%;
+    background-color: var(--surface-0);
+    border: 1px solid var(--border-1);
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   좁은 콘텐츠(.narrow, JS가 가운데 영역 실제 폭 기준으로 부여): 지휘 현황판 —
+   단일 보스 전체폭 + pool/calc 자연 세로 스택. 창 폭이 아니라 가운데 영역 폭에 반응
+   하도록 미디어쿼리 대신 클래스 기반. (모바일 셸에서도 isNarrow=true라 동일 적용)
+   ========================================================================== */
+.boss-battle-board-container.narrow {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+}
+.boss-battle-board-container.narrow .boss-battle-board {
+    flex: none;
+    overflow: visible;
+    padding: 8px;
+    border-right: none;
+}
+
+/* 보스 선택 탭 (1~5): 가로 스크롤, 문자열 줄바꿈 없음 */
+.boss-battle-board-container.narrow .board-boss-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 2px 10px;
+    margin-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+}
+.boss-battle-board-container.narrow .board-boss-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--border-1);
+    background: var(--surface-1);
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.boss-battle-board-container.narrow .board-boss-tab.active {
+    background: var(--accent-amber);
+    color: var(--text-inverse);
+    border-color: var(--accent-amber);
+}
+
+/* 단일 보스 전체폭 + 세로 스택 */
+.boss-battle-board-container.narrow .boss-columns {
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: visible;
+    padding-bottom: 0;
+}
+.boss-battle-board-container.narrow .boss-col {
+    flex: none;
+    min-width: 0;
+    width: 100%;
+    overflow: visible;
+}
+.boss-battle-board-container.narrow .pool-area,
+.boss-battle-board-container.narrow .calc-area {
+    height: auto;
+    overflow-y: visible;
+}
+
