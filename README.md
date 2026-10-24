@@ -124,28 +124,16 @@ npm run dev
 
 ### Supabase 側の DB 構築
 
-新しい Supabase プロジェクトに、次の順番で SQL を適用します。
-`schema.sql` は `pg_dump` の出力で、SQL Editor では実行できないメタコマンド（`\restrict`）を含むため、`psql` で実行してください。
-接続先は Supabase ダッシュボードの「Connect」にある **Session pooler**（ポート 5432）の URL を使います。
+新しい Supabase プロジェクトの **SQL Editor** で、次の 3 ファイルを順番に実行します。
 
-1. `schema.sql`：テーブル、RLS、関数などのベース（2026-08 時点のスナップショット）
-2. `supabase/migrations/20260810120000_environment_setup.sql`：Storage バケット、Realtime、pg_cron の設定（`public` スキーマ外のためダンプに含まれない部分）
-3. `supabase/migrations/` の `20260811120000_*` 以降をファイル名順に：スナップショット以降の変更
+1. [`supabase/init.sql`](supabase/init.sql)：テーブル、RLS、関数、トリガー、Storage、Realtime、定期ジョブまで含む DB 全体
+2. [`supabase/nikke.sql`](supabase/nikke.sql)：キャラクター（ニケ）の基本データ
+3. [`supabase/set_admin.sql`](supabase/set_admin.sql)：サイトで会員登録したアカウントを管理者にする（ファイル内の ID を書き換えてから実行）
 
-```bash
-psql "$SUPABASE_DB_URL" -f schema.sql
-psql "$SUPABASE_DB_URL" -f supabase/migrations/20260810120000_environment_setup.sql
-for f in supabase/migrations/*.sql; do
-  [[ "$(basename "$f")" > "20260811" ]] && psql "$SUPABASE_DB_URL" -f "$f"
-done
-```
+`init.sql` は、これまでのマイグレーション（[`supabase/migrations/`](supabase/migrations/)）をすべて適用した最終状態を 1 ファイルにまとめたものです。変更の履歴はマイグレーション側に残しています。
 
-その後、
-
-- サイトで会員登録したアカウントを管理者にするため、`site_admins` に 1 行追加します。
-  `insert into public.site_admins (user_id) select id from auth.users where email = '<登録した ID>@nikke.local';`（ID で登録すると内部的にこの形式のメールになります）
-- 管理画面からシーズン・ボス・キャラクターのデータを登録します。
-- Web Push や画像の自動削除を使う場合は、`supabase functions deploy <関数名>` で Edge Functions をデプロイし、シークレット（VAPID キーなど）をダッシュボードで設定します。
+その後、管理画面からシーズンとボスのデータを登録すれば利用できます。
+Web Push を使う場合は `supabase functions deploy send-push` でデプロイし、ダッシュボードの Database → Webhooks で `user_notifications` の INSERT を `send-push` に送るよう設定します。
 
 ## ディレクトリ構成
 
