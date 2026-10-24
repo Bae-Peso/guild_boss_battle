@@ -9,7 +9,6 @@
 
 **デモ**: https://guild-boss-battle.pages.dev/ （ログイン後「体験モード」で全機能を試せます。入力内容は保存されません）
 
-<!-- TODO: スクリーンショットか GIF を 2〜3 枚 (docs/images/ に置く) -->
 | 指揮ボード | 模擬戦記録 | 精算 |
 | :---: | :---: | :---: |
 | ![](docs/images/boss-dashboard.png) | ![](docs/images/mock-battles.png) | ![](docs/images/settlement.png) |
